@@ -9,7 +9,7 @@ import (
 
 //Init Init
 func Init() {
-	db := config.Connection()
+	db := config.InitDB()
 	router := config.CreateRouter()
 
 	studentRepo := repositories.InitStudentRepoImpl(db)
