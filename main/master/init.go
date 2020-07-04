@@ -1,23 +1,26 @@
 package master
 
 import (
-	"database/sql"
+	"gomux/config"
 	"gomux/main/master/controllers"
 	"gomux/main/master/repositories"
 	"gomux/main/master/usecases"
-
-	"github.com/gorilla/mux"
 )
 
 //Init Init
-func Init(r *mux.Router, db *sql.DB) {
+func Init() {
+	db := config.Connection()
+	router := config.CreateRouter()
+
 	studentRepo := repositories.InitStudentRepoImpl(db)
 	studentUseCase := usecases.InitStudentUseCase(studentRepo)
-	controllers.StudentController(r, studentUseCase)
+	controllers.StudentController(router, studentUseCase)
 	teacherRepo := repositories.InitTeacherRepoImpl(db)
 	teacherUseCase := usecases.InitTeacherUseCase(teacherRepo)
-	controllers.TeacherController(r, teacherUseCase)
+	controllers.TeacherController(router, teacherUseCase)
 	subjectRepo := repositories.InitSubjectRepoImpl(db)
 	subjectUseCase := usecases.InitSubjectUseCase(subjectRepo)
-	controllers.SubjectController(r, subjectUseCase)
+	controllers.SubjectController(router, subjectUseCase)
+
+	config.RunServer(router)
 }
