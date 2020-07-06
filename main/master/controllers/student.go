@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"encoding/json"
+	"gomux/main/master/middleware"
 	"gomux/main/master/models"
 	"gomux/main/master/usecases"
 	"net/http"
@@ -17,7 +18,10 @@ type StudentHandler struct {
 //StudentController StudentController
 func StudentController(r *mux.Router, service usecases.StudentUseCase) {
 	StudentHandler := StudentHandler{service}
-	r.HandleFunc("/students", StudentHandler.ListStudents).Methods(http.MethodGet)
+	allStudents := r.PathPrefix("/students").Subrouter()
+	allStudents.Use(middleware.ActivityLogMiddleware)
+	allStudents.HandleFunc("", StudentHandler.ListStudents).Methods(http.MethodGet)
+
 	r.HandleFunc("/student/{id}", StudentHandler.StudentByID).Methods(http.MethodGet)
 	r.HandleFunc("/student/{id}", StudentHandler.DeleteByID).Methods(http.MethodDelete)
 	r.HandleFunc("/student/{id}", StudentHandler.UpdateStudent).Methods(http.MethodPut)
