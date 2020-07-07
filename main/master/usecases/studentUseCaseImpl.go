@@ -3,6 +3,7 @@ package usecases
 import (
 	"gomux/main/master/models"
 	"gomux/main/master/repositories"
+	"gomux/utils"
 	"log"
 )
 
@@ -51,8 +52,12 @@ func (s StudentUsecaseImpl) UpdateStudentsByID(id string, changeStudent models.S
 
 //InsertStudents InsertStudents
 func (s StudentUsecaseImpl) InsertStudents(newStudent models.Student) error {
-	err := s.studentRepo.InsertStudentData(newStudent)
+	err := utils.ValidateInputNotNil(newStudent.StudentFname, newStudent.StudentLname, newStudent.StudentEmail)
 
+	if err != nil {
+		return err
+	}
+	err = s.studentRepo.InsertStudentData(newStudent)
 	if err != nil {
 		log.Fatal(err)
 	}

@@ -5,6 +5,7 @@ import (
 	"gomux/main/master/middleware"
 	"gomux/main/master/models"
 	"gomux/main/master/usecases"
+	"log"
 	"net/http"
 
 	"github.com/gorilla/mux"
@@ -94,7 +95,8 @@ func (s StudentHandler) InsertStudent(w http.ResponseWriter, r *http.Request) {
 	_ = json.NewDecoder(r.Body).Decode(&newStudent)
 	err := s.StudentUseCase.InsertStudents(newStudent)
 	if err != nil {
-		w.Write([]byte("Insert Failed"))
+		w.Write([]byte("Insert Failed Cannot null"))
+		log.Print(err)
 	} else {
 		w.Write([]byte("Insert Success"))
 	}
