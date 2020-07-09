@@ -16,9 +16,11 @@ func CreateRouter() *mux.Router {
 
 //RunServer RunServer
 func RunServer(router *mux.Router) {
+	server := GetCustomConf("server", "default")
 	port := GetCustomConf("port", "default")
-	fmt.Println("Setting Web Server at port : " + port)
-	err := http.ListenAndServe(port, router)
+	serverAndPort := fmt.Sprintf("%v:%v", server, port)
+	fmt.Println("Setting Web Server at port : " + server + ":" + port)
+	err := http.ListenAndServe(serverAndPort, router)
 	if err != nil {
 		log.Fatal(err)
 	}
