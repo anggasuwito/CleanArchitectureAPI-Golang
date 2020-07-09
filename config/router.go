@@ -16,7 +16,6 @@ func CreateRouter() *mux.Router {
 
 //RunServer RunServer
 func RunServer(router *mux.Router) {
-	aa
 	server := GetCustomConf("server", "default")
 	port := GetCustomConf("port", "default")
 	serverAndPort := fmt.Sprintf("%v:%v", server, port)
